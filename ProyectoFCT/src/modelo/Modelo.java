@@ -13,7 +13,7 @@ public class Modelo {
 		this.direccionBd = direccionBd;
 	}
 	public String getUsuarioBd() {
-		return usuarioBd;
+		return usuarioBd; 
 	}
 	public void setUsuarioBd(String usuarioBd) {
 		this.usuarioBd = usuarioBd;
