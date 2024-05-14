@@ -2,6 +2,7 @@ package controlador;
 
 import conexion.ConexionSQL;
 import modelo.Modelo;
+import vista.LoginWindow;
 
 public class Main {
 	static ConexionSQL conexionSQL;
@@ -10,7 +11,9 @@ public class Main {
 		Modelo modelo = new Modelo();
 		conexionSQL = new ConexionSQL(modelo);
 		System.out.println("Hola mundo");
-		conexionSQL.insertarDatosPrueba(1);
+		LoginWindow loginView = new LoginWindow();
+		LoginController loginController = new LoginController(loginView, conexionSQL ,modelo);
+		loginView.getLoginButton().addActionListener(loginController);
 	}
 
 }
