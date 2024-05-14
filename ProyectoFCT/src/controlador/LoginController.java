@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import conexion.ConexionSQL;
 import modelo.Modelo;
+import vista.HomeWindow;
 import vista.LoginWindow;
 
 public class LoginController implements ActionListener {
@@ -33,6 +34,9 @@ public class LoginController implements ActionListener {
 					if (conexionSQL.getRs().getString(1).equals(loginView.getUserTextField().getText())
 							&& conexionSQL.getRs().getString(2).equals(loginView.getPasswordField().getText())) {
 						System.out.println("Login correcto");
+						loginView.getFrame().dispose();
+						HomeWindow homeView = new HomeWindow(); 
+						HomeController HomeController = new HomeController(homeView, conexionSQL ,modelo);
 					} else {
 						System.out.println("Login incorrecto");
 					}
