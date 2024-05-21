@@ -25,7 +25,7 @@ public class LoginController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginView.getLoginButton()) {
-			try {
+			try { 
 				conexionSQL.query("SELECT nombre, password FROM usuarios WHERE nombre = '"
 						+ loginView.getUserTextField().getText() + "';");
 				if (conexionSQL.getRs().next()) { 
