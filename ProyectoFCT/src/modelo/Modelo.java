@@ -2,9 +2,9 @@ package modelo;
 
 public class Modelo {
     
-    private String direccionBd = "sql8.freesqldatabase.com:3306/sql8707001";
-    private String usuarioBd = "sql8707001";
-    private String passwordBd = "wktrUhdmv9";
+	private String direccionBd = "jdbc:mysql://localhost/proyectofct";
+	private String usuarioBd = "root";
+	private String passwordBd = "";
 
     public String getDireccionBd() {
         return direccionBd;

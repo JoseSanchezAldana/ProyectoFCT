@@ -3,8 +3,12 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,11 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controlador.HomeController;
+import modelo.UsuarioEntity;
 
 public class HomeWindow {
 
     private JFrame frame;
-    private HomeController controller;
+    JMenuItem mntmGestionVehiculos;
+    JMenuItem mntmGestionUsuarios;
+    JButton menuButtonInicio;
+    JButton menuButtonUsuarios;
+    JButton menuButtonVehiculos;
+    JButton menuButtonConfiguracion;
+    JPanel mainPanel;
 
     public HomeWindow() {
         initialize();
@@ -32,7 +43,7 @@ public class HomeWindow {
         frame.setTitle("Home Window");
         frame.setBounds(100, 100, 800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
+        frame.getContentPane().setLayout(new BorderLayout());
 
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
@@ -40,80 +51,149 @@ public class HomeWindow {
         JMenu gestionMenu = new JMenu("Gestión");
         menuBar.add(gestionMenu);
 
-        JMenuItem mntmGestionVehiculos = new JMenuItem("Gestión de vehículos");
+        mntmGestionVehiculos = new JMenuItem("Gestión de vehículos");
         gestionMenu.add(mntmGestionVehiculos);
 
-        JMenuItem mntmGestionUsuarios = new JMenuItem("Gestión de usuarios");
+        mntmGestionUsuarios = new JMenuItem("Gestión de usuarios");
         gestionMenu.add(mntmGestionUsuarios);
 
         JPanel navigationPanel = new JPanel();
         navigationPanel.setLayout(new BoxLayout(navigationPanel, BoxLayout.Y_AXIS));
         navigationPanel.setBackground(new Color(60, 63, 65));
 
-        addNavButton(navigationPanel, "Inicio", "Inicio seleccionado");
-        addNavButton(navigationPanel, "Vehículos", "Vehículos seleccionado");
-        addSubNavButton(navigationPanel, "  Añadir Vehículo", "Añadir Vehículo seleccionado");
-        addSubNavButton(navigationPanel, "  Eliminar Vehículo", "Eliminar Vehículo seleccionado");
-        addSubNavButton(navigationPanel, "  Editar Vehículo", "Editar Vehículo seleccionado");
-        addNavButton(navigationPanel, "Usuarios", "Usuarios seleccionado");
-        addSubNavButton(navigationPanel, "  Añadir Usuario", "Añadir Usuario seleccionado");
-        addSubNavButton(navigationPanel, "  Modificar Usuarios", "Modificar Usuarios seleccionado");
-        addSubNavButton(navigationPanel, "  Eliminar Usuarios", "Eliminar Usuarios seleccionado");
-        addNavButton(navigationPanel, "Configuración", "Configuración seleccionada");
+        addNavButton(navigationPanel, "Inicio", "Inicio seleccionado", menuButtonInicio = new JButton());
+        addNavButton(navigationPanel, "Gestión de vehículos", "Vehículos seleccionado", menuButtonVehiculos = new JButton());
+        addNavButton(navigationPanel, "Gestión de usuarios", "Usuarios seleccionado", menuButtonUsuarios = new JButton());
+        addNavButton(navigationPanel, "Configuración", "Configuración seleccionada", menuButtonConfiguracion = new JButton());
 
         navigationPanel.add(Box.createVerticalGlue());
-        frame.add(navigationPanel, BorderLayout.WEST);
+        frame.getContentPane().add(navigationPanel, BorderLayout.WEST);
 
-        JPanel mainPanel = new JPanel();
+        mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        JLabel welcomeLabel = new JLabel("Bienvenido a la Gestión de la Aplicación", SwingConstants.CENTER);
-        mainPanel.add(welcomeLabel, BorderLayout.CENTER);
-        frame.add(mainPanel, BorderLayout.CENTER);
+        mainPanel.setBackground(new Color(43, 43, 43));
+        frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 
         JLabel statusBar = new JLabel("Estado: Conectado");
-        frame.add(statusBar, BorderLayout.SOUTH);
+        statusBar.setForeground(Color.WHITE); // Texto en blanco
+        frame.getContentPane().add(statusBar, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
 
-    private void addNavButton(JPanel panel, String text, String actionCommand) {
-        JButton button = new JButton(text);
-        button.setActionCommand(actionCommand);
-        button.setAlignmentX(JButton.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(200, 40));
-        button.setPreferredSize(new Dimension(200, 40));
-        button.setBackground(new Color(84, 84, 84));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        panel.add(button);
+    private void addNavButton(JPanel panel, String text, String actionCommand, JButton menuButton) {
+        menuButton.setText(text);
+        menuButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        menuButton.setMaximumSize(new Dimension(200, 40));
+        menuButton.setPreferredSize(new Dimension(200, 40));
+        menuButton.setBackground(new Color(84, 84, 84));
+        menuButton.setForeground(Color.WHITE);
+        menuButton.setFocusPainted(false);
+        menuButton.setBorderPainted(false);
+        panel.add(menuButton);
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
+    }
 
-        if (controller != null) {
-            button.addActionListener(controller);
+    public void displayUserInfo(UsuarioEntity usuario) {
+        mainPanel.removeAll();
+        mainPanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Establecer el relleno horizontal
+
+        // User Info Panel
+        JPanel userInfoPanel = new JPanel();
+        userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
+        userInfoPanel.setBackground(new Color(60, 63, 65)); // Dark background for user info
+        userInfoPanel.setBorder(BorderFactory.createLineBorder(new Color(60, 63, 65), 15)); // Border for user info panel (2 píxeles de ancho)
+
+        JLabel userInfoTitle = new JLabel("Información del Usuario");
+        userInfoTitle.setForeground(Color.WHITE);
+        userInfoTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        userInfoTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        userInfoPanel.add(userInfoTitle);
+        userInfoPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Increased space between title and labels
+
+        JLabel idLabel = new JLabel("ID Usuario: " + usuario.getIdUsuario());
+        JLabel nombreLabel = new JLabel("Nombre: " + usuario.getNombre());
+        JLabel emailLabel = new JLabel("Email: " + usuario.getEmail());
+        JLabel rolLabel = new JLabel("Rol: " + usuario.getRol());
+
+        for (JLabel label : new JLabel[]{idLabel, nombreLabel, emailLabel, rolLabel}) {
+            label.setForeground(Color.WHITE);
+            label.setFont(new Font("Arial", Font.PLAIN, 14));
+            label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+            userInfoPanel.add(label);
+            userInfoPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Increased space between labels
         }
-    }
 
-    private void addSubNavButton(JPanel panel, String text, String actionCommand) {
-        JButton button = new JButton(text);
-        button.setActionCommand(actionCommand);
-        button.setAlignmentX(JButton.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(180, 40));
-        button.setPreferredSize(new Dimension(180, 40));
-        button.setBackground(new Color(100, 100, 100));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        panel.add(button);
-        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        // Vehicle Info Panel
+        JPanel vehicleInfoPanel = new JPanel();
+        vehicleInfoPanel.setLayout(new BoxLayout(vehicleInfoPanel, BoxLayout.Y_AXIS));
+        vehicleInfoPanel.setBackground(new Color(60, 63, 65)); // Slightly different dark background for vehicle info
+        vehicleInfoPanel.setBorder(BorderFactory.createLineBorder(new Color(60, 63, 65), 15)); // Border for vehicle info panel (2 píxeles de ancho)
 
-        if (controller != null) {
-            button.addActionListener(controller);
+        JLabel vehicleInfoTitle = new JLabel("Información del Vehículo");
+        vehicleInfoTitle.setForeground(Color.WHITE);
+        vehicleInfoTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        vehicleInfoTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        vehicleInfoPanel.add(vehicleInfoTitle);
+        vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Increased space between title and labels
+
+        JLabel marcaLabel = new JLabel("Marca: " + usuario.getVehiculo().getMarca());
+        JLabel modeloLabel = new JLabel("Modelo: " + usuario.getVehiculo().getModelo());
+        JLabel matriculaLabel = new JLabel("Matrícula: " + usuario.getVehiculo().getMatricula());
+        JLabel anioMatriculacionLabel = new JLabel("Año de matriculación: " + usuario.getVehiculo().getAnioMatriculacion());
+
+        for (JLabel label : new JLabel[]{marcaLabel, modeloLabel, matriculaLabel, anioMatriculacionLabel}) {
+            label.setForeground(Color.WHITE);
+            label.setFont(new Font("Arial", Font.PLAIN, 14));
+            label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+            vehicleInfoPanel.add(label);
+            vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Increased space between labels
         }
+
+        // Add user and vehicle info panels to the main panel
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        mainPanel.add(userInfoPanel, gbc);
+        gbc.gridy = 1;
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)), gbc); // Space between sections
+        gbc.gridy = 2;
+        mainPanel.add(vehicleInfoPanel, gbc);
+
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
-    public void setController(HomeController controller) {
-        this.controller = controller;
+
+
+
+    public JMenuItem getMntmGestionVehiculos() {
+        return mntmGestionVehiculos;
     }
-    
+
+    public JMenuItem getMntmGestionUsuarios() {
+        return mntmGestionUsuarios;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public JButton getMenuButtonInicio() {
+        return menuButtonInicio;
+    }
+
+    public JButton getMenuButtonUsuarios() {
+        return menuButtonUsuarios;
+    }
+
+    public JButton getMenuButtonVehiculos() {
+        return menuButtonVehiculos;
+    }
+
+    public JButton getMenuButtonConfiguracion() {
+        return menuButtonConfiguracion;
+    }
 }
