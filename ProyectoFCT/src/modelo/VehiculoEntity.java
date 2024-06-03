@@ -1,48 +1,37 @@
 package modelo;
 
 public class VehiculoEntity {
-	private String marca;
-	private String modelo;
-	private String matricula;
-	private int anioMatriculacion;
+    private int idVehiculos;
+    private String marca;
+    private String modelo;
+    private String matricula;
+    private int anoMatriculacion;
 
-	public VehiculoEntity(String marca, String modelo, String matricula, int anioMatriculacion) {
-		this.marca = marca;
-		this.modelo = modelo;
-		this.matricula = matricula;
-		this.anioMatriculacion = anioMatriculacion;
-	}
+    public VehiculoEntity(int idVehiculos, String marca, String modelo, String matricula, int anoMatriculacion) {
+        this.idVehiculos = idVehiculos;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.matricula = matricula;
+        this.anoMatriculacion = anoMatriculacion;
+    }
 
-	// Getters and setters for the fields
-	public String getMarca() {
-		return marca;
-	}
+    public int getIdVehiculos() {
+        return idVehiculos;
+    }
 
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
+    public String getMarca() {
+        return marca;
+    }
 
-	public String getModelo() {
-		return modelo;
-	}
+    public String getModelo() {
+        return modelo;
+    }
 
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
+    public String getMatricula() {
+        return matricula;
+    }
 
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-
-	public int getAnioMatriculacion() {
-		return anioMatriculacion;
-	}
-
-	public void setAnioMatriculacion(int anioMatriculacion) {
-		this.anioMatriculacion = anioMatriculacion;
-	}
+    public int getAnoMatriculacion() {
+        return anoMatriculacion;
+    }
 }

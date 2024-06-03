@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		Modelo modelo = new Modelo();
-		conexionSQL = new ConexionSQL(modelo);
+		conexionSQL = new ConexionSQL(modelo.getDireccionBd(), modelo.getUsuarioBd(), modelo.getPasswordBd());
 		LoginWindow loginView = new LoginWindow(); 
 		LoginController loginController = new LoginController(loginView, conexionSQL ,modelo);
 		loginView.getLoginButton().addActionListener(loginController);

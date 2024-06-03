@@ -16,7 +16,7 @@ public class LoginWindow {
 
     private void initialize() {
         frame = new JFrame();
-        frame.setTitle("Inicio de Sesión");
+        frame.setTitle("SGV - Sistema de gestión de vehículos");
         frame.setBounds(100, 100, 450, 350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
