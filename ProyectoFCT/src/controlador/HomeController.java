@@ -7,6 +7,7 @@ import java.util.List;
 import conexion.ConexionSQL;
 import modelo.Modelo;
 import modelo.VehiculoEntity;
+import modelo.UsuarioEntity;
 import vista.HomeWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
@@ -43,9 +44,21 @@ public class HomeController implements ActionListener {
 			System.out.println("MENU VEHICULOS");
 		} else if (e.getActionCommand() == "Gestión de usuarios") {
 			UserManagementWindow userWindow = new UserManagementWindow();
+			UserController userController = new UserController(userWindow, conexionSQL);
+			userWindow.getDeleteButton().addActionListener(userController);
+			
+			List<UsuarioEntity> usuarios = conexionSQL.obtenerUsuarios();
+			
+			for (UsuarioEntity usuario : usuarios) {
+				userWindow.getUserListModel().addElement(
+						"ID: " + usuario.getIdUsuario()
+						+ "   ||   Nombre: " + usuario.getNombre()
+						+ "   ||   Email: " + usuario.getEmail()
+						+ "   ||   Rol: " + usuario.getRol());
+			}
 			System.out.println("MENU USUARIOS");
 		} else if (e.getActionCommand() == "Configuración") {
 			System.out.println("Configuración seleccionada");
 		}
 	}
-}
+	}

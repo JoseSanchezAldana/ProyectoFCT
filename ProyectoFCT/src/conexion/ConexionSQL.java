@@ -1,6 +1,7 @@
 package conexion;
 
 import modelo.VehiculoEntity;
+import modelo.UsuarioEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -46,6 +47,26 @@ public class ConexionSQL {
         }
         return vehiculos;
     }
+    
+    public List<UsuarioEntity> obtenerUsuarios() {
+        List<UsuarioEntity> usuarios = new ArrayList<>();
+        try {
+            rs = s.executeQuery("SELECT * FROM usuarios");
+            while (rs.next()) {
+            	UsuarioEntity usuario = new UsuarioEntity(
+                        rs.getInt("idUsuario"),
+                        rs.getString("nombre"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("rol")
+                );
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
 
     public void crearVehiculo(VehiculoEntity vehiculo) {
         try {
@@ -55,6 +76,20 @@ public class ConexionSQL {
             ps.setString(2, vehiculo.getModelo());
             ps.setString(3, vehiculo.getMatricula());
             ps.setInt(4, vehiculo.getAnoMatriculacion());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void crearUsuario(UsuarioEntity usuario) {
+        try {
+            String consulta = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)";
+            ps = conexion.prepareStatement(consulta);
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, "1234");
+            ps.setString(4, usuario.getRol());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,12 +111,39 @@ public class ConexionSQL {
         }
 		return true;
     }
+    
+    public boolean modificarUsuario(UsuarioEntity usuario) {
+        try {
+            String consulta = "UPDATE usuarios SET nombre = ?, email = ?, password = ?, rol = ? WHERE idUsuario = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getPassword());
+            ps.setString(4, usuario.getRol());
+            ps.setInt(5, usuario.getIdUsuario());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return true;
+    }
 
     public void eliminarVehiculo(int idVehiculos) {
         try {
             String consulta = "DELETE FROM vehiculos WHERE idVehiculos = ?";
             ps = conexion.prepareStatement(consulta);
             ps.setInt(1, idVehiculos);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void eliminarUsuario(int idUsuario) {
+        try {
+            String consulta = "DELETE FROM usuarios WHERE idUsuario = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idUsuario);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,6 +170,28 @@ public class ConexionSQL {
             e.printStackTrace();
         }
         return vehiculo;
+    }
+    
+    public UsuarioEntity obtenerUsuarioPorId(int idUsuario) {
+        UsuarioEntity usuario = null;
+        try {
+            String consulta = "SELECT * FROM usuarios WHERE idUsuario = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+            	usuario = new UsuarioEntity(
+                    rs.getInt("idUsuario"),
+                    rs.getString("nombre"),
+                    rs.getString("email"),
+                    rs.getString("password"),
+                    rs.getString("rol")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuario;
     }
 
     public void cerrarConexion() {

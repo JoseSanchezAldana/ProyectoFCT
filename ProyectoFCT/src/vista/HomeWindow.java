@@ -134,26 +134,26 @@ public class HomeWindow {
 		vehicleInfoPanel.setBackground(new Color(60, 63, 65));
 		vehicleInfoPanel.setBorder(BorderFactory.createLineBorder(new Color(60, 63, 65), 15));
 
-		JLabel vehicleInfoTitle = new JLabel("Información del Vehículo");
+		JLabel vehicleInfoTitle = new JLabel("Vehiculos asociados");
 		vehicleInfoTitle.setForeground(Color.WHITE);
 		vehicleInfoTitle.setFont(new Font("Arial", Font.BOLD, 16));
 		vehicleInfoTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		vehicleInfoPanel.add(vehicleInfoTitle);
 		vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-		JLabel marcaLabel = new JLabel("Marca: " + usuario.getVehiculo().getMarca());
-		JLabel modeloLabel = new JLabel("Modelo: " + usuario.getVehiculo().getModelo());
-		JLabel matriculaLabel = new JLabel("Matrícula: " + usuario.getVehiculo().getMatricula());
-		JLabel anioMatriculacionLabel = new JLabel(
-				"Año de matriculación: " + usuario.getVehiculo().getAnoMatriculacion());
+//		JLabel marcaLabel = new JLabel("Marca: " + usuario.getVehiculo().getMarca());
+//		JLabel modeloLabel = new JLabel("Modelo: " + usuario.getVehiculo().getModelo());
+//		JLabel matriculaLabel = new JLabel("Matrícula: " + usuario.getVehiculo().getMatricula());
+//		JLabel anioMatriculacionLabel = new JLabel(
+//				"Año de matriculación: " + usuario.getVehiculo().getAnoMatriculacion());
 
-		for (JLabel label : new JLabel[] { marcaLabel, modeloLabel, matriculaLabel, anioMatriculacionLabel }) {
-			label.setForeground(Color.WHITE);
-			label.setFont(new Font("Arial", Font.PLAIN, 14));
-			label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-			vehicleInfoPanel.add(label);
-			vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		}
+//		for (JLabel label : new JLabel[] { marcaLabel, modeloLabel, matriculaLabel, anioMatriculacionLabel }) {
+//			label.setForeground(Color.WHITE);
+//			label.setFont(new Font("Arial", Font.PLAIN, 14));
+//			label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+//			vehicleInfoPanel.add(label);
+//			vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+//		}
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;

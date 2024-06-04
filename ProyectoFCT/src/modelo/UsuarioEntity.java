@@ -4,16 +4,16 @@ public class UsuarioEntity {
     private int idUsuario;
     private String nombre;
     private String email;
+    private String password;
     private String rol;
-    private VehiculoEntity vehiculo; // Assuming this is the class for vehicle details
 
     // Constructor
-    public UsuarioEntity(int idUsuario, String nombre, String email, String rol, VehiculoEntity vehiculo) {
+    public UsuarioEntity(int idUsuario, String nombre, String email, String password, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.email = email;
+        this.password = password;
         this.rol = rol;
-        this.vehiculo = vehiculo;
     }
 
     // Getters and setters
@@ -49,11 +49,12 @@ public class UsuarioEntity {
         this.rol = rol;
     }
 
-    public VehiculoEntity getVehiculo() {
-        return vehiculo;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setVehiculo(VehiculoEntity vehiculo) {
-        this.vehiculo = vehiculo;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
+    
 }

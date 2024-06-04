@@ -45,7 +45,7 @@ public class LoginController implements ActionListener {
 						homeView.getMenuButtonInicio().addActionListener(HomeController);
 						homeView.getMenuButtonVehiculos().addActionListener(HomeController);
 						VehiculoEntity vehiculo = new VehiculoEntity(1 , "Toyota", "Corolla", "ABC1234", 2018);
-						UsuarioEntity usuario = new UsuarioEntity(1, "Juan Pérez", "juan.perez@example.com", "Admin", vehiculo);
+						UsuarioEntity usuario = new UsuarioEntity(1, "Juan Pérez", "juan.perez@example.com", "1234", "Admin");
 						homeView.displayUserInfo(usuario);
 					} else {
 						System.out.println("Login incorrecto");

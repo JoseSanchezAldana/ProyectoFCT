@@ -107,4 +107,57 @@ public class UserManagementWindow {
     public JFrame getFrame() {
         return frame;
     }
+
+    public int getSelectedUserId() {
+        String selectedValue = userList.getSelectedValue();
+        if (selectedValue != null) {
+            String[] parts = selectedValue.split("   \\|\\|   ");
+            String idPart = parts[0];
+            String idStr = idPart.replace("ID: ", "").trim();
+            return Integer.parseInt(idStr);
+        }
+        return -1;
+    }
+
+	public void setUserList(JList<String> userList) {
+		this.userList = userList;
+	}
+
+	public DefaultListModel<String> getUserListModel() {
+		return userListModel;
+	}
+
+	public void setUserListModel(DefaultListModel<String> userListModel) {
+		this.userListModel = userListModel;
+	}
+
+	public JButton getCreateButton() {
+		return createButton;
+	}
+
+	public void setCreateButton(JButton createButton) {
+		this.createButton = createButton;
+	}
+
+	public JButton getModifyButton() {
+		return modifyButton;
+	}
+
+	public void setModifyButton(JButton modifyButton) {
+		this.modifyButton = modifyButton;
+	}
+
+	public JButton getDeleteButton() {
+		return deleteButton;
+	}
+
+	public void setDeleteButton(JButton deleteButton) {
+		this.deleteButton = deleteButton;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+    
+    
 }
