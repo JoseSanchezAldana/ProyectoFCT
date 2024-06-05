@@ -11,6 +11,7 @@ import modelo.VehiculoEntity;
 import modelo.UsuarioEntity;
 import vista.AssignmentsManagementWindow;
 import vista.HomeWindow;
+import vista.MaintenanceManagementWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
 
@@ -48,6 +49,10 @@ public class HomeController implements ActionListener {
 			assignmentsController.loadAssignments();
 			System.out.println("Asignación de vehículos seleccionada");
 		} else if (e.getActionCommand() == "Mantenimientos") {
+			MaintenanceManagementWindow maintenanceWindow = new MaintenanceManagementWindow();
+			MaintenanceController maintenanceController = new MaintenanceController(maintenanceWindow, conexionSQL);
+			maintenanceWindow.getDeleteButton().addActionListener(maintenanceController);
+			maintenanceController.loadMaintenance();;
 			System.out.println("Mantenimientos seleccionado");
 		}
 	}
