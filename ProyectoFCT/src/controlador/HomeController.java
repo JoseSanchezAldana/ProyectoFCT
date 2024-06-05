@@ -5,9 +5,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import conexion.ConexionSQL;
+import modelo.AsignacionesEntity;
 import modelo.Modelo;
 import modelo.VehiculoEntity;
 import modelo.UsuarioEntity;
+import vista.AssignmentsManagementWindow;
 import vista.HomeWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
@@ -31,34 +33,22 @@ public class HomeController implements ActionListener {
 			VehicleManagementWindow vehiculeWindow = new VehicleManagementWindow();
 			VehicleController vehicleController = new VehicleController(vehiculeWindow, conexionSQL);
 			vehiculeWindow.getDeleteButton().addActionListener(vehicleController);
-			List<VehiculoEntity> vehiculos = conexionSQL.obtenerVehiculos();
-			
-			for (VehiculoEntity vehiculo : vehiculos) {
-				vehiculeWindow.getVehicleListModel().addElement(
-						"ID: " + vehiculo.getIdVehiculos() 
-						+ "   ||   Matricula: " + vehiculo.getMatricula()
-						+ "   ||   Marca: " + vehiculo.getMarca() 
-						+ "   ||   Modelo: " + vehiculo.getModelo()
-						+ "   ||   Matricula: " + vehiculo.getAnoMatriculacion());
-			}
+			vehicleController.loadVehicles();
 			System.out.println("MENU VEHICULOS");
 		} else if (e.getActionCommand() == "Gestión de usuarios") {
 			UserManagementWindow userWindow = new UserManagementWindow();
 			UserController userController = new UserController(userWindow, conexionSQL);
 			userWindow.getDeleteButton().addActionListener(userController);
-			
-			List<UsuarioEntity> usuarios = conexionSQL.obtenerUsuarios();
-			
-			for (UsuarioEntity usuario : usuarios) {
-				userWindow.getUserListModel().addElement(
-						"ID: " + usuario.getIdUsuario()
-						+ "   ||   Nombre: " + usuario.getNombre()
-						+ "   ||   Email: " + usuario.getEmail()
-						+ "   ||   Rol: " + usuario.getRol());
-			}
+			userController.loadUsuarios();
 			System.out.println("MENU USUARIOS");
-		} else if (e.getActionCommand() == "Configuración") {
-			System.out.println("Configuración seleccionada");
+		} else if (e.getActionCommand() == "Asignación de vehículos") {
+			AssignmentsManagementWindow assignmentsWindow = new AssignmentsManagementWindow();
+			AssignmentsController assignmentsController = new AssignmentsController(assignmentsWindow, conexionSQL);
+			assignmentsWindow.getDeleteButton().addActionListener(assignmentsController);
+			assignmentsController.loadAssignments();
+			System.out.println("Asignación de vehículos seleccionada");
+		} else if (e.getActionCommand() == "Mantenimientos") {
+			System.out.println("Mantenimientos seleccionado");
 		}
 	}
 	}

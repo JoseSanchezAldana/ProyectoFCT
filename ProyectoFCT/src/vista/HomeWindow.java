@@ -28,10 +28,13 @@ public class HomeWindow {
 	private JFrame frame;
 	JMenuItem mntmGestionVehiculos;
 	JMenuItem mntmGestionUsuarios;
+	JMenuItem mntmAsignaciones;
+	JMenuItem mntmMantenimientos;
 	JButton menuButtonInicio;
 	JButton menuButtonUsuarios;
 	JButton menuButtonVehiculos;
-	JButton menuButtonConfiguracion;
+	JButton menuButtonAsignaciones;
+	JButton menuButtonMantenimientos;
 	JPanel mainPanel;
 
 	public HomeWindow() {
@@ -56,6 +59,12 @@ public class HomeWindow {
 
 		mntmGestionUsuarios = new JMenuItem("Gestión de usuarios");
 		gestionMenu.add(mntmGestionUsuarios);
+		
+		mntmAsignaciones = new JMenuItem("Asignación de vehículos");
+		gestionMenu.add(mntmAsignaciones);
+		
+		mntmMantenimientos = new JMenuItem("Mantenimientos");
+		gestionMenu.add(mntmMantenimientos);
 
 		JPanel navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel, BoxLayout.Y_AXIS));
@@ -66,6 +75,10 @@ public class HomeWindow {
 				menuButtonUsuarios = new JButton());
 		addNavButton(navigationPanel, "Gestión de vehículos", "Vehículos seleccionado",
 				menuButtonVehiculos = new JButton());
+		addNavButton(navigationPanel, "Asignación de vehículos", "Asignación seleccionado",
+				menuButtonAsignaciones = new JButton());
+		addNavButton(navigationPanel, "Mantenimientos", "Mantenimientos seleccionado",
+				menuButtonMantenimientos = new JButton());
 
 		navigationPanel.add(Box.createVerticalGlue());
 		frame.getContentPane().add(navigationPanel, BorderLayout.WEST);
@@ -191,7 +204,69 @@ public class HomeWindow {
 		return menuButtonVehiculos;
 	}
 
-	public JButton getMenuButtonConfiguracion() {
-		return menuButtonConfiguracion;
+	public JMenuItem getMntmAsignaciones() {
+		return mntmAsignaciones;
 	}
+
+	public void setMntmAsignaciones(JMenuItem mntmAsignaciones) {
+		this.mntmAsignaciones = mntmAsignaciones;
+	}
+
+	public JMenuItem getMntmMantenimientos() {
+		return mntmMantenimientos;
+	}
+
+	public void setMntmMantenimientos(JMenuItem mntmMantenimientos) {
+		this.mntmMantenimientos = mntmMantenimientos;
+	}
+
+	public JButton getMenuButtonAsignaciones() {
+		return menuButtonAsignaciones;
+	}
+
+	public void setMenuButtonAsignaciones(JButton menuButtonAsignaciones) {
+		this.menuButtonAsignaciones = menuButtonAsignaciones;
+	}
+
+	public JButton getMenuButtonMantenimientos() {
+		return menuButtonMantenimientos;
+	}
+
+	public void setMenuButtonMantenimientos(JButton menuButtonMantenimientos) {
+		this.menuButtonMantenimientos = menuButtonMantenimientos;
+	}
+
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
+
+	public void setMainPanel(JPanel mainPanel) {
+		this.mainPanel = mainPanel;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public void setMntmGestionVehiculos(JMenuItem mntmGestionVehiculos) {
+		this.mntmGestionVehiculos = mntmGestionVehiculos;
+	}
+
+	public void setMntmGestionUsuarios(JMenuItem mntmGestionUsuarios) {
+		this.mntmGestionUsuarios = mntmGestionUsuarios;
+	}
+
+	public void setMenuButtonInicio(JButton menuButtonInicio) {
+		this.menuButtonInicio = menuButtonInicio;
+	}
+
+	public void setMenuButtonUsuarios(JButton menuButtonUsuarios) {
+		this.menuButtonUsuarios = menuButtonUsuarios;
+	}
+
+	public void setMenuButtonVehiculos(JButton menuButtonVehiculos) {
+		this.menuButtonVehiculos = menuButtonVehiculos;
+	}
+
+	
 }

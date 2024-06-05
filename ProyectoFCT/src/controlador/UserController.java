@@ -31,7 +31,7 @@ public class UserController implements ActionListener {
 		this.userManagementWindow.getModifyButton().addActionListener(this);
 	}
 
-	private void loadUsuarios() {
+	public void loadUsuarios() {
 		userManagementWindow.getUserListModel().clear();
 		List<UsuarioEntity> usuarios = conexionSQL.obtenerUsuarios();
 		for (UsuarioEntity usuario : usuarios) {

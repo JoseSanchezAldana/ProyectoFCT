@@ -41,9 +41,15 @@ public class LoginController implements ActionListener {
 						HomeController HomeController = new HomeController(homeView, conexionSQL ,modelo);
 						homeView.getMntmGestionUsuarios().addActionListener(HomeController);
 						homeView.getMntmGestionVehiculos().addActionListener(HomeController);
+						homeView.getMntmAsignaciones().addActionListener(HomeController);
+						homeView.getMntmMantenimientos().addActionListener(HomeController);
+						
 						homeView.getMenuButtonUsuarios().addActionListener(HomeController);
 						homeView.getMenuButtonInicio().addActionListener(HomeController);
 						homeView.getMenuButtonVehiculos().addActionListener(HomeController);
+						homeView.getMenuButtonAsignaciones().addActionListener(HomeController);
+						homeView.getMenuButtonMantenimientos().addActionListener(HomeController);
+						
 						VehiculoEntity vehiculo = new VehiculoEntity(1 , "Toyota", "Corolla", "ABC1234", 2018);
 						UsuarioEntity usuario = new UsuarioEntity(1, "Juan Pérez", "juan.perez@example.com", "1234", "Admin");
 						homeView.displayUserInfo(usuario);

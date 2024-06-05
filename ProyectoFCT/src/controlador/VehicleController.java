@@ -27,7 +27,7 @@ public class VehicleController implements ActionListener {
         this.vehicleManagementWindow.getModifyButton().addActionListener(this);
 	}
 
-	private void loadVehicles() {
+	public void loadVehicles() {
 		vehicleManagementWindow.getVehicleListModel().clear();
 		List<VehiculoEntity> vehiculos = conexionSQL.obtenerVehiculos();
 		for (VehiculoEntity vehiculo : vehiculos) {

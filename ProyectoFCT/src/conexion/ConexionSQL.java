@@ -1,6 +1,7 @@
 package conexion;
 
 import modelo.VehiculoEntity;
+import modelo.AsignacionesEntity;
 import modelo.UsuarioEntity;
 
 import java.sql.*;
@@ -66,6 +67,25 @@ public class ConexionSQL {
             e.printStackTrace();
         }
         return usuarios;
+    }
+    
+    public List<AsignacionesEntity> obtenerAsignaciones() {
+        List<AsignacionesEntity> asignaciones = new ArrayList<>();
+        try {
+            rs = s.executeQuery("SELECT * FROM asignaciones");
+            while (rs.next()) {
+            	AsignacionesEntity asignacion = new AsignacionesEntity(
+                        rs.getInt("idAsignacion"),
+                        rs.getInt("idVehiculo"),
+                        rs.getInt("idConductor"),
+                        rs.getString("fechaAsignacion")
+                );
+            	asignaciones.add(asignacion);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return asignaciones;
     }
 
     public void crearVehiculo(VehiculoEntity vehiculo) {
@@ -144,6 +164,17 @@ public class ConexionSQL {
             String consulta = "DELETE FROM usuarios WHERE idUsuario = ?";
             ps = conexion.prepareStatement(consulta);
             ps.setInt(1, idUsuario);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void eliminarAsignacion(int idAsignacion) {
+        try {
+            String consulta = "DELETE FROM asignaciones WHERE idAsignacion = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idAsignacion);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
