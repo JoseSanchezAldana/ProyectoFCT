@@ -10,6 +10,7 @@ import modelo.Modelo;
 import modelo.VehiculoEntity;
 import modelo.UsuarioEntity;
 import vista.AssignmentsManagementWindow;
+import vista.CreateAssignmentsWindow;
 import vista.HomeWindow;
 import vista.MaintenanceManagementWindow;
 import vista.UserManagementWindow;

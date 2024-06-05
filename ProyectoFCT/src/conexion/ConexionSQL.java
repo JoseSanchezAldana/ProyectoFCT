@@ -135,6 +135,19 @@ public class ConexionSQL {
             e.printStackTrace();
         }
     }
+    
+    public void crearAsignacion(AsignacionesEntity asignacion) {
+        try {
+            String consulta = "INSERT INTO asignaciones (idVehiculo, idConductor, fechaAsignacion) VALUES (?, ?, ?)";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, asignacion.getIdVehiculo());
+            ps.setInt(2, asignacion.getIdConductor());
+            ps.setString(3, asignacion.getFechaAsignacion());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean modificarVehiculo(VehiculoEntity vehiculo) {
         try {
@@ -161,6 +174,21 @@ public class ConexionSQL {
             ps.setString(3, usuario.getPassword());
             ps.setString(4, usuario.getRol());
             ps.setInt(5, usuario.getIdUsuario());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return true;
+    }
+    
+    public boolean modificarAsignacion(AsignacionesEntity asignacion) {
+        try {
+            String consulta = "UPDATE asignaciones SET idVehiculo = ?, idConductor = ?, fechaAsignacion = ? WHERE idAsignacion = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, asignacion.getIdVehiculo());
+            ps.setInt(2, asignacion.getIdConductor());
+            ps.setString(3, asignacion.getFechaAsignacion());
+            ps.setInt(4, asignacion.getIdAsignacion());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -255,7 +283,87 @@ public class ConexionSQL {
         }
         return usuario;
     }
+    
+    public AsignacionesEntity obtenerAsignacionPorId(int idUsuario) {
+        AsignacionesEntity asignacion = null;
+        try {
+            String consulta = "SELECT * FROM asignaciones WHERE idAsignacion = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+            	asignacion = new AsignacionesEntity(
+                    rs.getInt("idAsignacion"),
+                    rs.getInt("idVehiculo"),
+                    rs.getInt("idConductor"),
+                    rs.getString("fechaAsignacion")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return asignacion;
+    }
 
+    public String[] obtenerMatriculasVehiculos() {
+        List<String> matriculas = new ArrayList<>();
+        try {
+            rs = s.executeQuery("SELECT matricula FROM vehiculos");
+            while (rs.next()) {
+                matriculas.add(rs.getString("matricula"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return matriculas.toArray(new String[0]);
+    }
+    
+    public String[] obtenerEmailUsuarios() {
+        List<String> email = new ArrayList<>();
+        try {
+            rs = s.executeQuery("SELECT email FROM usuarios");
+            while (rs.next()) {
+                email.add(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return email.toArray(new String[0]);
+    }
+    
+    public int obtenerIdVehiculoPorMatricula(String matricula) {
+        int idVehiculo = -1;
+        try {
+            String consulta = "SELECT idVehiculos FROM vehiculos WHERE matricula = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setString(1, matricula);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                idVehiculo = rs.getInt("idVehiculos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idVehiculo;
+    }
+
+    public int obtenerIdUsuarioPorEmail(String email) {
+        int idUsuario = -1;
+        try {
+            String consulta = "SELECT idUsuario FROM usuarios WHERE email = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                idUsuario = rs.getInt("idUsuario");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idUsuario;
+    }
+
+    
     public void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {
