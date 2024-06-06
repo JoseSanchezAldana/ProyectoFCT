@@ -16,7 +16,8 @@ public class LoginController implements ActionListener {
 
 	private LoginWindow loginView;
 	private ConexionSQL conexionSQL;
-	private Modelo modelo;
+	public Modelo modelo;
+	UsuarioEntity usuario;
 
 	public LoginController(LoginWindow loginView, ConexionSQL conexionSQL, Modelo modelo) {
 		this.loginView = loginView;
@@ -27,6 +28,7 @@ public class LoginController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginView.getLoginButton()) {
+			modelo.setIdActiveUser(conexionSQL.obtenerIdUsuarioPorNombre(loginView.getUserTextField().getText()));
 			try { 
 				conexionSQL.query("SELECT nombre, password FROM usuarios WHERE nombre = '"
 						+ loginView.getUserTextField().getText() + "';");
@@ -37,22 +39,32 @@ public class LoginController implements ActionListener {
 							&& conexionSQL.getRs().getString(2).equals(loginView.getPasswordField().getText())) {
 						System.out.println("Login correcto");
 						loginView.getFrame().dispose();
-						HomeWindow homeView = new HomeWindow(); 
+						HomeWindow homeView = new HomeWindow(conexionSQL, modelo); 
+						
 						HomeController HomeController = new HomeController(homeView, conexionSQL ,modelo);
-						homeView.getMntmGestionUsuarios().addActionListener(HomeController);
-						homeView.getMntmGestionVehiculos().addActionListener(HomeController);
-						homeView.getMntmAsignaciones().addActionListener(HomeController);
-						homeView.getMntmMantenimientos().addActionListener(HomeController);
 						
-						homeView.getMenuButtonUsuarios().addActionListener(HomeController);
-						homeView.getMenuButtonInicio().addActionListener(HomeController);
-						homeView.getMenuButtonVehiculos().addActionListener(HomeController);
-						homeView.getMenuButtonAsignaciones().addActionListener(HomeController);
-						homeView.getMenuButtonMantenimientos().addActionListener(HomeController);
+						usuario = conexionSQL.obtenerUsuarioPorId(modelo.getIdActiveUser());
+						if (usuario.getRol().equals("admin")) {
+							homeView.getMntmGestionUsuarios().addActionListener(HomeController);
+							homeView.getMntmGestionVehiculos().addActionListener(HomeController);
+							homeView.getMntmAsignaciones().addActionListener(HomeController);
+							homeView.getMntmMantenimientos().addActionListener(HomeController);
+							homeView.getMenuButtonUsuarios().addActionListener(HomeController);
+							homeView.getMenuButtonVehiculos().addActionListener(HomeController);
+							homeView.getMenuButtonAsignaciones().addActionListener(HomeController);
+							homeView.getMenuButtonMantenimientos().addActionListener(HomeController);
+						} else {
+							homeView.getMenuButtonUserM().addActionListener(HomeController);
+							homeView.getMntmUserM().addActionListener(HomeController);
+						}
 						
-						VehiculoEntity vehiculo = new VehiculoEntity(1 , "Toyota", "Corolla", "ABC1234", 2018);
-						UsuarioEntity usuario = new UsuarioEntity(1, "Juan Pérez", "juan.perez@example.com", "1234", "Admin");
-						homeView.displayUserInfo(usuario);
+						homeView.getMntmSalir().addActionListener(HomeController);
+						
+						homeView.getMenuButtonSalir().addActionListener(HomeController);
+						
+						//homeView.getMenuButtonInicio().addActionListener(HomeController);
+						
+						homeView.displayUserInfo();
 					} else {
 						System.out.println("Login incorrecto");
 					}

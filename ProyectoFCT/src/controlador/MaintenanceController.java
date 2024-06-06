@@ -32,7 +32,7 @@ public class MaintenanceController implements ActionListener {
 		for (MantenimientoEntity mantenimiento : mantenimientos) {
 			maintenanceWindow.getMaintenanceListModel()
 					.addElement("ID: " + mantenimiento.getIdMantenimiento() + "   ||   Vehiculo: "
-							+ mantenimiento.getIdVehiculo() + "   ||   Tipo de mantenimiento: "
+							+ conexionSQL.obtenerVehiculoPorId(mantenimiento.getIdVehiculo()) .getMatricula() + "   ||   Tipo de mantenimiento: "
 							+ mantenimiento.getTipoMantenimiento() + "   ||   Fecha del mantenimiento: "
 							+ mantenimiento.getFechaProgramada());
 		}

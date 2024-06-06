@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,8 +21,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import conexion.ConexionSQL;
 import controlador.HomeController;
+import modelo.Modelo;
 import modelo.UsuarioEntity;
+import modelo.VehiculoEntity;
 
 public class HomeWindow {
 
@@ -30,16 +34,24 @@ public class HomeWindow {
 	JMenuItem mntmGestionUsuarios;
 	JMenuItem mntmAsignaciones;
 	JMenuItem mntmMantenimientos;
-	JButton menuButtonInicio;
+	JMenuItem mntmSalir;
+	JMenuItem mntmUserM;
+	//JButton menuButtonInicio;
 	JButton menuButtonUsuarios;
 	JButton menuButtonVehiculos;
 	JButton menuButtonAsignaciones;
 	JButton menuButtonMantenimientos;
 	JButton menuButtonSalir;
+	JButton menuButtonUserM;
 	JPanel mainPanel;
-	JMenu salirMenu;
+	ConexionSQL conexionSQL;
+	Modelo modelo;
+	UsuarioEntity usuario;
 
-	public HomeWindow() {
+	public HomeWindow(ConexionSQL conexionSQL, Modelo modelo) {
+		this.conexionSQL = conexionSQL;
+		this.modelo = modelo;
+		usuario = conexionSQL.obtenerUsuarioPorId(modelo.getIdActiveUser());
 		initialize();
 	}
 
@@ -53,39 +65,49 @@ public class HomeWindow {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
+		JMenu inicioMenu = new JMenu("Inicio");
+		menuBar.add(inicioMenu);
+
 		JMenu gestionMenu = new JMenu("Gestión");
-		menuBar.add(gestionMenu);
-		
-		salirMenu = new JMenu("Salir");
-		menuBar.add(salirMenu);
+
+		mntmSalir = new JMenuItem("Salir");
+		inicioMenu.add(mntmSalir);
 
 		mntmGestionVehiculos = new JMenuItem("Gestión de vehículos");
-		gestionMenu.add(mntmGestionVehiculos);
 
 		mntmGestionUsuarios = new JMenuItem("Gestión de usuarios");
-		gestionMenu.add(mntmGestionUsuarios);
-		
+		mntmUserM = new JMenuItem("Mantenimientos pendientes");
+
 		mntmAsignaciones = new JMenuItem("Asignación de vehículos");
-		gestionMenu.add(mntmAsignaciones);
-		
+
 		mntmMantenimientos = new JMenuItem("Mantenimientos");
-		gestionMenu.add(mntmMantenimientos);
 
 		JPanel navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel, BoxLayout.Y_AXIS));
 		navigationPanel.setBackground(new Color(60, 63, 65));
 
-		addNavButton(navigationPanel, "Inicio", "Inicio seleccionado", menuButtonInicio = new JButton());
-		addNavButton(navigationPanel, "Gestión de usuarios", "Usuarios seleccionado",
-				menuButtonUsuarios = new JButton());
-		addNavButton(navigationPanel, "Gestión de vehículos", "Vehículos seleccionado",
-				menuButtonVehiculos = new JButton());
-		addNavButton(navigationPanel, "Asignación de vehículos", "Asignación seleccionado",
-				menuButtonAsignaciones = new JButton());
-		addNavButton(navigationPanel, "Mantenimientos", "Mantenimientos seleccionado",
-				menuButtonMantenimientos = new JButton());
-		addNavButton(navigationPanel, "Salir", "Salir",
-				menuButtonSalir = new JButton());
+		//addNavButton(navigationPanel, "Inicio", "Inicio seleccionado", menuButtonInicio = new JButton());
+		
+		if (usuario.getRol().equals("admin")) {
+			menuBar.add(gestionMenu);
+			gestionMenu.add(mntmGestionVehiculos);
+			gestionMenu.add(mntmGestionUsuarios);
+			gestionMenu.add(mntmAsignaciones);
+			gestionMenu.add(mntmMantenimientos);
+			addNavButton(navigationPanel, "Gestión de usuarios", "Usuarios seleccionado",
+					menuButtonUsuarios = new JButton());
+			addNavButton(navigationPanel, "Gestión de vehículos", "Vehículos seleccionado",
+					menuButtonVehiculos = new JButton());
+			addNavButton(navigationPanel, "Asignación de vehículos", "Asignación seleccionado",
+					menuButtonAsignaciones = new JButton());
+			addNavButton(navigationPanel, "Mantenimientos", "Mantenimientos seleccionado",
+					menuButtonMantenimientos = new JButton());
+		} else {
+			gestionMenu.add(mntmUserM);
+			addNavButton(navigationPanel, "Mantenimientos pendientes", "Mantenimientos pendientes",
+					menuButtonUserM = new JButton());
+		}
+		addNavButton(navigationPanel, "Salir", "Salir", menuButtonSalir = new JButton());
 
 		navigationPanel.add(Box.createVerticalGlue());
 		frame.getContentPane().add(navigationPanel, BorderLayout.WEST);
@@ -95,7 +117,7 @@ public class HomeWindow {
 		mainPanel.setBackground(new Color(43, 43, 43));
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 
-		JLabel statusBar = new JLabel("Estado: Conectado");
+		JLabel statusBar = new JLabel("Proyecto FCT || José Francisco Sánchez Aldana");
 		statusBar.setForeground(Color.BLACK);
 		frame.getContentPane().add(statusBar, BorderLayout.SOUTH);
 
@@ -115,7 +137,7 @@ public class HomeWindow {
 		panel.add(Box.createRigidArea(new Dimension(0, 5)));
 	}
 
-	public void displayUserInfo(UsuarioEntity usuario) {
+	public void displayUserInfo() {
 		mainPanel.removeAll();
 		mainPanel.setLayout(new GridBagLayout());
 
@@ -134,6 +156,7 @@ public class HomeWindow {
 		userInfoTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		userInfoPanel.add(userInfoTitle);
 		userInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
 
 		JLabel idLabel = new JLabel("ID Usuario: " + usuario.getIdUsuario());
 		JLabel nombreLabel = new JLabel("Nombre: " + usuario.getNombre());
@@ -161,19 +184,19 @@ public class HomeWindow {
 		vehicleInfoPanel.add(vehicleInfoTitle);
 		vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-//		JLabel marcaLabel = new JLabel("Marca: " + usuario.getVehiculo().getMarca());
-//		JLabel modeloLabel = new JLabel("Modelo: " + usuario.getVehiculo().getModelo());
-//		JLabel matriculaLabel = new JLabel("Matrícula: " + usuario.getVehiculo().getMatricula());
-//		JLabel anioMatriculacionLabel = new JLabel(
-//				"Año de matriculación: " + usuario.getVehiculo().getAnoMatriculacion());
-
-//		for (JLabel label : new JLabel[] { marcaLabel, modeloLabel, matriculaLabel, anioMatriculacionLabel }) {
-//			label.setForeground(Color.WHITE);
-//			label.setFont(new Font("Arial", Font.PLAIN, 14));
-//			label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-//			vehicleInfoPanel.add(label);
-//			vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-//		}
+		List<VehiculoEntity> vehiculos = conexionSQL.obtenerVehiculosAsignadosAUsuario(modelo.getIdActiveUser());
+		JLabel vehiculosLabel = new JLabel();
+			for (VehiculoEntity vehiculo : vehiculos) {
+	            JLabel labelVehiculo = new JLabel();
+	            labelVehiculo.setForeground(Color.WHITE);
+				labelVehiculo.setFont(new Font("Arial", Font.PLAIN, 14));
+				labelVehiculo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	            labelVehiculo.setText("Matrícula: " + vehiculo.getMatricula() + "   ||   "
+	                                  + "Marca: " + vehiculo.getMarca() + "   ||   "
+	                                  + "Modelo: " + vehiculo.getModelo());
+	            vehicleInfoPanel.add(labelVehiculo);
+	        }
+		vehicleInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -197,10 +220,6 @@ public class HomeWindow {
 
 	public JFrame getFrame() {
 		return frame;
-	}
-
-	public JButton getMenuButtonInicio() {
-		return menuButtonInicio;
 	}
 
 	public JButton getMenuButtonUsuarios() {
@@ -263,10 +282,6 @@ public class HomeWindow {
 		this.mntmGestionUsuarios = mntmGestionUsuarios;
 	}
 
-	public void setMenuButtonInicio(JButton menuButtonInicio) {
-		this.menuButtonInicio = menuButtonInicio;
-	}
-
 	public void setMenuButtonUsuarios(JButton menuButtonUsuarios) {
 		this.menuButtonUsuarios = menuButtonUsuarios;
 	}
@@ -275,5 +290,36 @@ public class HomeWindow {
 		this.menuButtonVehiculos = menuButtonVehiculos;
 	}
 
-	
+	public JButton getMenuButtonSalir() {
+		return menuButtonSalir;
+	}
+
+	public void setMenuButtonSalir(JButton menuButtonSalir) {
+		this.menuButtonSalir = menuButtonSalir;
+	}
+
+	public JMenuItem getMntmSalir() {
+		return mntmSalir;
+	}
+
+	public void setMntmSalir(JMenuItem mntmSalir) {
+		this.mntmSalir = mntmSalir;
+	}
+
+	public JMenuItem getMntmUserM() {
+		return mntmUserM;
+	}
+
+	public void setMntmUserM(JMenuItem mntmUserM) {
+		this.mntmUserM = mntmUserM;
+	}
+
+	public JButton getMenuButtonUserM() {
+		return menuButtonUserM;
+	}
+
+	public void setMenuButtonUserM(JButton menuButtonUserM) {
+		this.menuButtonUserM = menuButtonUserM;
+	}
+
 }

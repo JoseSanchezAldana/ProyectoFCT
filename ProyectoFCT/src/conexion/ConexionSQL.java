@@ -107,6 +107,34 @@ public class ConexionSQL {
         }
         return mantenimientos;
     }
+    
+    public List<MantenimientoEntity> obtenerMantenimientosPorUsuario(int idUsuario) {
+        List<MantenimientoEntity> mantenimientos = new ArrayList<>();
+        String query = "SELECT m.idMantenimiento, m.idVehiculo, m.tipoMantenimiento, m.fechaProgramada " +
+                       "FROM mantenimientos m " +
+                       "JOIN vehiculos v ON m.idVehiculo = v.idVehiculos " +
+                       "JOIN asignaciones a ON v.idVehiculos = a.idVehiculo " +
+                       "JOIN usuarios u ON a.idConductor = u.idUsuario " +
+                       "WHERE u.idUsuario = ?";
+
+        try {
+            ps = conexion.prepareStatement(query);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                MantenimientoEntity mantenimiento = new MantenimientoEntity(
+                        rs.getInt("idMantenimiento"),
+                        rs.getInt("idVehiculo"),
+                        rs.getString("tipoMantenimiento"),
+                        rs.getString("fechaProgramada")
+                );
+                mantenimientos.add(mantenimiento);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mantenimientos;
+    }
 
     public void crearVehiculo(VehiculoEntity vehiculo) {
         try {
@@ -411,6 +439,48 @@ public class ConexionSQL {
         }
         return idUsuario;
     }
+    
+    public int obtenerIdUsuarioPorNombre(String nombre) {
+        int idUsuario = -1;
+        try {
+            String consulta = "SELECT idUsuario FROM usuarios WHERE nombre = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setString(1, nombre);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                idUsuario = rs.getInt("idUsuario");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idUsuario;
+    }
+    
+    public List<VehiculoEntity> obtenerVehiculosAsignadosAUsuario(int idUsuario) {
+        List<VehiculoEntity> vehiculos = new ArrayList<>();
+        try {
+            String consulta = "SELECT v.* FROM vehiculos v " +
+                              "JOIN asignaciones a ON v.idVehiculos = a.idVehiculo " +
+                              "WHERE a.idConductor = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                VehiculoEntity vehiculo = new VehiculoEntity(
+                        rs.getInt("idVehiculos"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getString("matricula"),
+                        rs.getInt("ano_matriculacion")
+                );
+                vehiculos.add(vehiculo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehiculos;
+    }
+
 
     
     public void cerrarConexion() {

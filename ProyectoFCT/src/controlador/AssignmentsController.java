@@ -32,17 +32,18 @@ public class AssignmentsController implements ActionListener {
 		for (AsignacionesEntity asignacion : asignaciones) {
 			assignmentsWindow.getAssignmentsListModel()
 					.addElement("ID: " + asignacion.getIdAsignacion() + "   ||   Vehiculo: "
-							+ asignacion.getIdVehiculo() + "   ||   Conductor: " + asignacion.getIdConductor()
+							+ conexionSQL.obtenerVehiculoPorId(asignacion.getIdVehiculo()).getMatricula()
+							+ "   ||   Conductor: " + conexionSQL.obtenerUsuarioPorId(asignacion.getIdConductor()).getNombre()
 							+ "   ||   Fecha de asignación: " + asignacion.getFechaAsignacion());
 		}
 	}
-	
+
 	public boolean validarFormatoFecha(String fecha) {
-        String formatoFechaRegex = "\\d{4}-\\d{2}-\\d{2}";
-        Pattern pattern = Pattern.compile(formatoFechaRegex);
-        Matcher matcher = pattern.matcher(fecha);
-        return matcher.matches();
-    }
+		String formatoFechaRegex = "\\d{4}-\\d{2}-\\d{2}";
+		Pattern pattern = Pattern.compile(formatoFechaRegex);
+		Matcher matcher = pattern.matcher(fecha);
+		return matcher.matches();
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -68,11 +69,11 @@ public class AssignmentsController implements ActionListener {
 			String[] vehiculos = conexionSQL.obtenerMatriculasVehiculos();
 			for (String vehiculo : vehiculos) {
 				createAssignmentsWindow.getVehiculoComboBox().addItem(vehiculo);
-            }
+			}
 			String[] conductores = conexionSQL.obtenerEmailUsuarios();
 			for (String conductor : conductores) {
 				createAssignmentsWindow.getConductorComboBox().addItem(conductor);
-            }
+			}
 			createAssignmentsWindow.getCancelButton().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -82,17 +83,19 @@ public class AssignmentsController implements ActionListener {
 			createAssignmentsWindow.getAssignButton().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-			        int idVehiculo = conexionSQL.obtenerIdVehiculoPorMatricula(createAssignmentsWindow.getVehiculoComboBox().getSelectedItem().toString());
-			        int idConductor = conexionSQL.obtenerIdUsuarioPorEmail(createAssignmentsWindow.getConductorComboBox().getSelectedItem().toString());
-			        String fechaAsignacion = createAssignmentsWindow.getFechaField().getText();
+					int idVehiculo = conexionSQL.obtenerIdVehiculoPorMatricula(
+							createAssignmentsWindow.getVehiculoComboBox().getSelectedItem().toString());
+					int idConductor = conexionSQL.obtenerIdUsuarioPorEmail(
+							createAssignmentsWindow.getConductorComboBox().getSelectedItem().toString());
+					String fechaAsignacion = createAssignmentsWindow.getFechaField().getText();
 
-			        if (!validarFormatoFecha(fechaAsignacion)) {
-	                    JOptionPane.showMessageDialog(createAssignmentsWindow,
-	                            "El formato de la fecha de asignación no es válido. Debe seguir el formato yyyy-MM-dd.",
-	                            "Error de formato de fecha", JOptionPane.ERROR_MESSAGE);
-	                    return;
-			        }
-			        AsignacionesEntity asignacion = new AsignacionesEntity(0, idVehiculo, idConductor, fechaAsignacion);
+					if (!validarFormatoFecha(fechaAsignacion)) {
+						JOptionPane.showMessageDialog(createAssignmentsWindow,
+								"El formato de la fecha de asignación no es válido. Debe seguir el formato yyyy-MM-dd.",
+								"Error de formato de fecha", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					AsignacionesEntity asignacion = new AsignacionesEntity(0, idVehiculo, idConductor, fechaAsignacion);
 					conexionSQL.crearAsignacion(asignacion);
 					createAssignmentsWindow.dispose();
 					assignmentsWindow.getAssignmentsListModel().removeAllElements();
@@ -108,26 +111,29 @@ public class AssignmentsController implements ActionListener {
 					String[] vehiculos = conexionSQL.obtenerMatriculasVehiculos();
 					for (String vehiculo : vehiculos) {
 						createAssignmentsWindow.getVehiculoComboBox().addItem(vehiculo);
-		            }
+					}
 					String[] conductores = conexionSQL.obtenerEmailUsuarios();
 					for (String conductor : conductores) {
 						createAssignmentsWindow.getConductorComboBox().addItem(conductor);
-		            }
+					}
 					createAssignmentsWindow.setVisible(true);
 					createAssignmentsWindow.getAssignButton().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							int idVehiculo = conexionSQL.obtenerIdVehiculoPorMatricula(createAssignmentsWindow.getVehiculoComboBox().getSelectedItem().toString());
-					        int idConductor = conexionSQL.obtenerIdUsuarioPorEmail(createAssignmentsWindow.getConductorComboBox().getSelectedItem().toString());
-					        String fechaAsignacion = createAssignmentsWindow.getFechaField().getText();
+							int idVehiculo = conexionSQL.obtenerIdVehiculoPorMatricula(
+									createAssignmentsWindow.getVehiculoComboBox().getSelectedItem().toString());
+							int idConductor = conexionSQL.obtenerIdUsuarioPorEmail(
+									createAssignmentsWindow.getConductorComboBox().getSelectedItem().toString());
+							String fechaAsignacion = createAssignmentsWindow.getFechaField().getText();
 
-					        if (!validarFormatoFecha(fechaAsignacion)) {
-			                    JOptionPane.showMessageDialog(createAssignmentsWindow,
-			                            "El formato de la fecha de asignación no es válido. Debe seguir el formato yyyy-MM-dd.",
-			                            "Error de formato de fecha", JOptionPane.ERROR_MESSAGE);
-			                    return;
-					        }
-					        AsignacionesEntity asignacion = new AsignacionesEntity(idAsignacion, idVehiculo, idConductor, fechaAsignacion);
+							if (!validarFormatoFecha(fechaAsignacion)) {
+								JOptionPane.showMessageDialog(createAssignmentsWindow,
+										"El formato de la fecha de asignación no es válido. Debe seguir el formato yyyy-MM-dd.",
+										"Error de formato de fecha", JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+							AsignacionesEntity asignacion = new AsignacionesEntity(idAsignacion, idVehiculo,
+									idConductor, fechaAsignacion);
 							conexionSQL.modificarAsignacion(asignacion);
 							createAssignmentsWindow.dispose();
 							assignmentsWindow.getAssignmentsListModel().removeAllElements();

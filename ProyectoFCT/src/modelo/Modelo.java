@@ -5,6 +5,7 @@ public class Modelo {
 	private String direccionBd = "jdbc:mysql://localhost/proyectofct";
 	private String usuarioBd = "root";
 	private String passwordBd = "";
+	private int idActiveUser = 0;
 
     public String getDireccionBd() {
         return direccionBd;
@@ -24,4 +25,11 @@ public class Modelo {
     public void setPasswordBd(String passwordBd) {
         this.passwordBd = passwordBd;
     }
+	public int getIdActiveUser() {
+		return idActiveUser;
+	}
+	public void setIdActiveUser(int idActiveUser) {
+		this.idActiveUser = idActiveUser;
+	}
+    
 }

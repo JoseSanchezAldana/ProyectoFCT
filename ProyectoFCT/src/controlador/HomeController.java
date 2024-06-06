@@ -13,6 +13,7 @@ import vista.AssignmentsManagementWindow;
 import vista.CreateAssignmentsWindow;
 import vista.HomeWindow;
 import vista.MaintenanceManagementWindow;
+import vista.UserMaintenanceWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
 
@@ -55,6 +56,13 @@ public class HomeController implements ActionListener {
 			maintenanceWindow.getDeleteButton().addActionListener(maintenanceController);
 			maintenanceController.loadMaintenance();;
 			System.out.println("Mantenimientos seleccionado");
+		} else if (e.getActionCommand() == "Salir") {
+			System.exit(0);
+		} else if (e.getActionCommand() == "Mantenimientos pendientes") {
+			System.out.println("HOla");
+			UserMaintenanceWindow maintenanceUserWindow = new UserMaintenanceWindow();
+			UserMaintenanceControlller userMController = new UserMaintenanceControlller(maintenanceUserWindow, conexionSQL, modelo);
+			userMController.loadMaintenance();
 		}
 	}
 	}
