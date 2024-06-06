@@ -143,7 +143,7 @@ public class AssignmentsController implements ActionListener {
 				}
 			} else {
 				JOptionPane.showMessageDialog(assignmentsWindow.getFrame(),
-						"No se ha seleccionado ningún vehículo para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+						"No se ha seleccionado ninguna asignación para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

@@ -148,6 +148,19 @@ public class ConexionSQL {
             e.printStackTrace();
         }
     }
+    
+    public void crearMantenimiento(MantenimientoEntity asignacion) {
+        try {
+            String consulta = "INSERT INTO mantenimientos (idVehiculo, tipoMantenimiento, fechaProgramada) VALUES (?, ?, ?)";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, asignacion.getIdVehiculo());
+            ps.setString(2, asignacion.getTipoMantenimiento());
+            ps.setString(3, asignacion.getFechaProgramada());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean modificarVehiculo(VehiculoEntity vehiculo) {
         try {
@@ -189,6 +202,21 @@ public class ConexionSQL {
             ps.setInt(2, asignacion.getIdConductor());
             ps.setString(3, asignacion.getFechaAsignacion());
             ps.setInt(4, asignacion.getIdAsignacion());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return true;
+    }
+    
+    public boolean modificarMantenimiento(MantenimientoEntity mantenimiento) {
+        try {
+            String consulta = "UPDATE mantenimientos SET idVehiculo = ?, tipoMantenimiento = ?, fechaProgramada = ? WHERE idMantenimiento = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, mantenimiento.getIdVehiculo());
+            ps.setString(2, mantenimiento.getTipoMantenimiento());
+            ps.setString(3, mantenimiento.getFechaProgramada());
+            ps.setInt(4, mantenimiento.getIdMantenimiento());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -284,12 +312,12 @@ public class ConexionSQL {
         return usuario;
     }
     
-    public AsignacionesEntity obtenerAsignacionPorId(int idUsuario) {
+    public AsignacionesEntity obtenerAsignacionPorId(int idAsignacion) {
         AsignacionesEntity asignacion = null;
         try {
             String consulta = "SELECT * FROM asignaciones WHERE idAsignacion = ?";
             ps = conexion.prepareStatement(consulta);
-            ps.setInt(1, idUsuario);
+            ps.setInt(1, idAsignacion);
             rs = ps.executeQuery();
             if (rs.next()) {
             	asignacion = new AsignacionesEntity(
@@ -303,6 +331,27 @@ public class ConexionSQL {
             e.printStackTrace();
         }
         return asignacion;
+    }
+    
+    public MantenimientoEntity obtenerMantenimientoPorId(int idMantenimiento) {
+        MantenimientoEntity mantenimiento = null;
+        try {
+            String consulta = "SELECT * FROM mantenimientos WHERE idMantenimiento = ?";
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, idMantenimiento);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+            	mantenimiento = new MantenimientoEntity(
+                    rs.getInt("idMantenimiento"),
+                    rs.getInt("idVehiculo"),
+                    rs.getString("tipoMantenimiento"),
+                    rs.getString("fechaProgramada")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mantenimiento;
     }
 
     public String[] obtenerMatriculasVehiculos() {

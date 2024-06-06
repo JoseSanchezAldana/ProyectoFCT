@@ -35,7 +35,9 @@ public class HomeWindow {
 	JButton menuButtonVehiculos;
 	JButton menuButtonAsignaciones;
 	JButton menuButtonMantenimientos;
+	JButton menuButtonSalir;
 	JPanel mainPanel;
+	JMenu salirMenu;
 
 	public HomeWindow() {
 		initialize();
@@ -53,6 +55,9 @@ public class HomeWindow {
 
 		JMenu gestionMenu = new JMenu("Gestión");
 		menuBar.add(gestionMenu);
+		
+		salirMenu = new JMenu("Salir");
+		menuBar.add(salirMenu);
 
 		mntmGestionVehiculos = new JMenuItem("Gestión de vehículos");
 		gestionMenu.add(mntmGestionVehiculos);
@@ -79,6 +84,8 @@ public class HomeWindow {
 				menuButtonAsignaciones = new JButton());
 		addNavButton(navigationPanel, "Mantenimientos", "Mantenimientos seleccionado",
 				menuButtonMantenimientos = new JButton());
+		addNavButton(navigationPanel, "Salir", "Salir",
+				menuButtonSalir = new JButton());
 
 		navigationPanel.add(Box.createVerticalGlue());
 		frame.getContentPane().add(navigationPanel, BorderLayout.WEST);
