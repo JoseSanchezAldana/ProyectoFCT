@@ -7,7 +7,6 @@ public class UsuarioEntity {
     private String password;
     private String rol;
 
-    // Constructor
     public UsuarioEntity(int idUsuario, String nombre, String email, String password, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
