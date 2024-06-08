@@ -6,6 +6,7 @@ public class Modelo {
 	private String usuarioBd = "root";
 	private String passwordBd = "";
 	private int idActiveUser = 0;
+	private String key = "afghklkhghkln";
 
     public String getDireccionBd() {
         return direccionBd;
@@ -30,6 +31,12 @@ public class Modelo {
 	}
 	public void setIdActiveUser(int idActiveUser) {
 		this.idActiveUser = idActiveUser;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
     
 }

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import conexion.ConexionSQL;
 import modelo.Modelo;
@@ -27,22 +28,25 @@ public class LoginController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		SecurityUtilities security = new SecurityUtilities();
 		if (e.getSource() == loginView.getLoginButton()) {
 			modelo.setIdActiveUser(conexionSQL.obtenerIdUsuarioPorNombre(loginView.getUserTextField().getText()));
-			try { 
+			try {
 				conexionSQL.query("SELECT nombre, password FROM usuarios WHERE nombre = '"
 						+ loginView.getUserTextField().getText() + "';");
-				if (conexionSQL.getRs().next()) { 
-					System.out.println("Usuario introducido: " + loginView.getUserTextField().getText() + " || Usuario bd: " + conexionSQL.getRs().getString(1));
-					System.out.println("Contraseña introducida: " + loginView.getPasswordField().getText() + " || Contraseña bd: " + conexionSQL.getRs().getString(2));
+				if (conexionSQL.getRs().next()) {
+					System.out.println("Usuario introducido: " + loginView.getUserTextField().getText()
+							+ " || Usuario bd: " + conexionSQL.getRs().getString(1));
+					System.out.println("Contraseña introducida: " + loginView.getPasswordField().getText()
+							+ " || Contraseña bd: " + conexionSQL.getRs().getString(2));
 					if (conexionSQL.getRs().getString(1).equals(loginView.getUserTextField().getText())
-							&& conexionSQL.getRs().getString(2).equals(loginView.getPasswordField().getText())) {
+							&& conexionSQL.getRs().getString(2).equals(security.encrypt(loginView.getPasswordField().getText(), modelo.getKey()))) {
 						System.out.println("Login correcto");
 						loginView.getFrame().dispose();
-						HomeWindow homeView = new HomeWindow(conexionSQL, modelo); 
-						
-						HomeController HomeController = new HomeController(homeView, conexionSQL ,modelo);
-						
+						HomeWindow homeView = new HomeWindow(conexionSQL, modelo);
+
+						HomeController HomeController = new HomeController(homeView, conexionSQL, modelo);
+
 						usuario = conexionSQL.obtenerUsuarioPorId(modelo.getIdActiveUser());
 						if (usuario.getRol().equals("admin")) {
 							homeView.getMntmGestionUsuarios().addActionListener(HomeController);
@@ -57,13 +61,9 @@ public class LoginController implements ActionListener {
 							homeView.getMenuButtonUserM().addActionListener(HomeController);
 							homeView.getMntmUserM().addActionListener(HomeController);
 						}
-						
+
 						homeView.getMntmSalir().addActionListener(HomeController);
-						
 						homeView.getMenuButtonSalir().addActionListener(HomeController);
-						
-						//homeView.getMenuButtonInicio().addActionListener(HomeController);
-						
 						homeView.displayUserInfo();
 					} else {
 						System.out.println("Login incorrecto");
@@ -75,5 +75,4 @@ public class LoginController implements ActionListener {
 		}
 
 	}
-
 }

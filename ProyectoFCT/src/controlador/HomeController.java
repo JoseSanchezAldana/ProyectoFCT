@@ -40,7 +40,7 @@ public class HomeController implements ActionListener {
 			System.out.println("MENU VEHICULOS");
 		} else if (e.getActionCommand() == "Gestión de usuarios") {
 			UserManagementWindow userWindow = new UserManagementWindow();
-			UserController userController = new UserController(userWindow, conexionSQL);
+			UserController userController = new UserController(userWindow, conexionSQL, modelo);
 			userWindow.getDeleteButton().addActionListener(userController);
 			userController.loadUsuarios();
 			System.out.println("MENU USUARIOS");

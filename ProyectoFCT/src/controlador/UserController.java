@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import conexion.ConexionSQL;
+import modelo.Modelo;
 import modelo.UsuarioEntity;
 import modelo.VehiculoEntity;
 import vista.CreateUserWindow;
@@ -21,10 +22,12 @@ import vista.VehicleManagementWindow;
 public class UserController implements ActionListener {
 	private UserManagementWindow userManagementWindow;
 	private ConexionSQL conexionSQL;
+	private Modelo modelo;
 
-	public UserController(UserManagementWindow userManagementWindow, ConexionSQL conexionSQL) {
+	public UserController(UserManagementWindow userManagementWindow, ConexionSQL conexionSQL, Modelo modelo) {
 		this.userManagementWindow = userManagementWindow;
 		this.conexionSQL = conexionSQL;
+		this.modelo = modelo;
 
 		this.userManagementWindow.getDeleteButton().addActionListener(this);
 		this.userManagementWindow.getCreateButton().addActionListener(this);
@@ -59,6 +62,7 @@ public class UserController implements ActionListener {
 				}
 			}
 		} else if (e.getSource() == userManagementWindow.getCreateButton()) {
+			SecurityUtilities security = new SecurityUtilities();
 			CreateUserWindow createUserWindow = new CreateUserWindow();
 			createUserWindow.getCancelButton().addActionListener(new ActionListener() {
 				@Override
@@ -71,7 +75,7 @@ public class UserController implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					String nombre = createUserWindow.getNombreField().getText();
 			        String email = createUserWindow.getEmailField().getText();
-			        String password = createUserWindow.getPasswordField().getText();
+			        String password = security.encrypt(createUserWindow.getPasswordField().getText(), modelo.getKey());
 			        String rol = createUserWindow.getRolField().getText();
 
 			        UsuarioEntity usuario = new UsuarioEntity(0, nombre, email, password, rol);
@@ -82,19 +86,20 @@ public class UserController implements ActionListener {
 			});
 			createUserWindow.setVisible(true);
 		} else if (e.getSource() == userManagementWindow.getModifyButton()) {
+			SecurityUtilities security = new SecurityUtilities();
 			int idUsuario = userManagementWindow.getSelectedUserId();
 			if (idUsuario != -1) {
 				UsuarioEntity usuario = conexionSQL.obtenerUsuarioPorId(idUsuario);
 				if (usuario != null) {
 					ModifyUserWindow modifyUserWindow = new ModifyUserWindow(usuario.getNombre(),
-							usuario.getEmail(), usuario.getPassword(), usuario.getRol());
+							usuario.getEmail(), security.decrypt(usuario.getPassword(), modelo.getKey()), usuario.getRol());
 					modifyUserWindow.setVisible(true);
 					modifyUserWindow.getModifyButton().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							String nombre = modifyUserWindow.getNombreField().getText();
 					        String email = modifyUserWindow.getEmailField().getText();
-					        String password = modifyUserWindow.getPasswordField().getText();
+					        String password = security.encrypt(modifyUserWindow.getPasswordField().getText(), modelo.getKey());
 					        String rol = modifyUserWindow.getRolField().getText();
 
 					        UsuarioEntity usuario = new UsuarioEntity(idUsuario, nombre, email, password, rol);
