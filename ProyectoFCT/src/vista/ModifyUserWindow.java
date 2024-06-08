@@ -10,25 +10,9 @@ public class ModifyUserWindow extends JFrame {
 	private JTextField nombreField;
 	private JTextField emailField;
 	private JTextField passwordField;
-	private JTextField rolField;
+    private JComboBox<String> rolComboBox;
 	private JButton cancelButton;
 	private JButton modifyButton;
-
-	public JButton getCancelButton() {
-		return cancelButton;
-	}
-
-	public void setCancelButton(JButton cancelButton) {
-		this.cancelButton = cancelButton;
-	}
-
-	public JButton getModifyButton() {
-		return modifyButton;
-	}
-
-	public void setModifyButton(JButton modifyButton) {
-		this.modifyButton = modifyButton;
-	}
 
 	public ModifyUserWindow(String nombre, String email, String password, String rol) {
 		setTitle("Modificar Vehículo");
@@ -57,7 +41,7 @@ public class ModifyUserWindow extends JFrame {
 		passwordField = new JTextField();
 		JLabel rolLabel = new JLabel("Rol:");
 		rolLabel.setForeground(Color.WHITE);
-		rolField = new JTextField(String.valueOf(rol));
+		 rolComboBox = new JComboBox<>(new String[]{"admin", "usuario"});
 
 		formPanel.add(nombreLabel);
 		formPanel.add(nombreField);
@@ -66,7 +50,7 @@ public class ModifyUserWindow extends JFrame {
 		formPanel.add(passwordLabel);
 		formPanel.add(passwordField);
 		formPanel.add(rolLabel);
-		formPanel.add(rolField);
+		formPanel.add(rolComboBox);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -113,13 +97,27 @@ public class ModifyUserWindow extends JFrame {
 		this.passwordField = passwordField;
 	}
 
-	public JTextField getRolField() {
-		return rolField;
+	public JComboBox<String> getRolComboBox() {
+		return rolComboBox;
 	}
 
-	public void setRolField(JTextField rolField) {
-		this.rolField = rolField;
+	public void setRolComboBox(JComboBox<String> rolComboBox) {
+		this.rolComboBox = rolComboBox;
 	}
 
+	public JButton getCancelButton() {
+		return cancelButton;
+	}
 
+	public void setCancelButton(JButton cancelButton) {
+		this.cancelButton = cancelButton;
+	}
+
+	public JButton getModifyButton() {
+		return modifyButton;
+	}
+
+	public void setModifyButton(JButton modifyButton) {
+		this.modifyButton = modifyButton;
+	}
 }

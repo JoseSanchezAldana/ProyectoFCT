@@ -10,7 +10,7 @@ public class CreateUserWindow extends JFrame {
 	private JTextField nombreField;
 	private JTextField emailField;
 	private JTextField passwordField;
-	private JTextField rolField;
+	private JComboBox<String> rolComboBox;
 	private JButton createButton;
 	private JButton cancelButton;
 
@@ -41,7 +41,7 @@ public class CreateUserWindow extends JFrame {
 		passwordField = new JTextField();
 		JLabel rolLabel = new JLabel("Rol:");
 		rolLabel.setForeground(Color.WHITE);
-		rolField = new JTextField();
+		rolComboBox = new JComboBox<>(new String[]{"admin", "usuario"});
 
 		formPanel.add(nombreLabel);
 		formPanel.add(nombreField);
@@ -50,7 +50,7 @@ public class CreateUserWindow extends JFrame {
 		formPanel.add(passwordLabel);
 		formPanel.add(passwordField);
 		formPanel.add(rolLabel);
-		formPanel.add(rolField);
+		formPanel.add(rolComboBox);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -105,12 +105,12 @@ public class CreateUserWindow extends JFrame {
 		this.emailField = emailField;
 	}
 
-	public JTextField getRolField() {
-		return rolField;
+	public JComboBox<String> getRolComboBox() {
+		return rolComboBox;
 	}
 
-	public void setRolField(JTextField rolField) {
-		this.rolField = rolField;
+	public void setRolComboBox(JComboBox<String> rolComboBox) {
+		this.rolComboBox = rolComboBox;
 	}
 
 	public JTextField getPasswordField() {

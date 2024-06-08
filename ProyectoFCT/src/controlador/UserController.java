@@ -76,7 +76,7 @@ public class UserController implements ActionListener {
 					String nombre = createUserWindow.getNombreField().getText();
 			        String email = createUserWindow.getEmailField().getText();
 			        String password = security.encrypt(createUserWindow.getPasswordField().getText(), modelo.getKey());
-			        String rol = createUserWindow.getRolField().getText();
+			        String rol = createUserWindow.getRolComboBox().getSelectedItem().toString();
 
 			        UsuarioEntity usuario = new UsuarioEntity(0, nombre, email, password, rol);
 					conexionSQL.crearUsuario(usuario);
@@ -100,7 +100,7 @@ public class UserController implements ActionListener {
 							String nombre = modifyUserWindow.getNombreField().getText();
 					        String email = modifyUserWindow.getEmailField().getText();
 					        String password = security.encrypt(modifyUserWindow.getPasswordField().getText(), modelo.getKey());
-					        String rol = modifyUserWindow.getRolField().getText();
+					        String rol = modifyUserWindow.getRolComboBox().getSelectedItem().toString();
 
 					        UsuarioEntity usuario = new UsuarioEntity(idUsuario, nombre, email, password, rol);
 							if (conexionSQL.modificarUsuario(usuario)) {
