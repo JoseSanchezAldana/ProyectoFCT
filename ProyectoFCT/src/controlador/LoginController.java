@@ -13,19 +13,33 @@ import modelo.VehiculoEntity;
 import vista.HomeWindow;
 import vista.LoginWindow;
 
+/**
+ * El controlador LoginController gestiona las interacciones del usuario en la ventana de inicio de sesión.
+ * Verifica las credenciales del usuario y, si son correctas, muestra la ventana principal de la aplicación.
+ */
 public class LoginController implements ActionListener {
-
 	private LoginWindow loginView;
 	private ConexionSQL conexionSQL;
 	public Modelo modelo;
 	UsuarioEntity usuario;
 
+	/**
+     * Constructor para el controlador LoginController.
+     * @param loginView La ventana de inicio de sesión.
+     * @param conexionSQL El objeto de conexión a la base de datos.
+     * @param modelo El modelo de datos utilizado en la aplicación.
+     */
 	public LoginController(LoginWindow loginView, ConexionSQL conexionSQL, Modelo modelo) {
 		this.loginView = loginView;
 		this.conexionSQL = conexionSQL;
 		this.modelo = modelo;
 	}
 
+	/**
+     * Método que gestiona las acciones del usuario en la ventana de inicio de sesión.
+     * Verifica las credenciales ingresadas por el usuario y muestra la ventana principal si son correctas.
+     * @param e El evento que desencadena la acción.
+     */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SecurityUtilities security = new SecurityUtilities();

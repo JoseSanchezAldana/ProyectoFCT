@@ -19,11 +19,20 @@ import vista.ModifyVehicleWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
 
+/**
+ * La clase UserController gestiona las interacciones entre la ventana de gestión de usuarios y la base de datos.
+ */
 public class UserController implements ActionListener {
 	private UserManagementWindow userManagementWindow;
 	private ConexionSQL conexionSQL;
 	private Modelo modelo;
 
+	/**
+     * Constructor de la clase UserController.
+     * @param userManagementWindow La ventana de gestión de usuarios.
+     * @param conexionSQL La conexión a la base de datos.
+     * @param modelo El modelo de la aplicación.
+     */
 	public UserController(UserManagementWindow userManagementWindow, ConexionSQL conexionSQL, Modelo modelo) {
 		this.userManagementWindow = userManagementWindow;
 		this.conexionSQL = conexionSQL;
@@ -34,6 +43,9 @@ public class UserController implements ActionListener {
 		this.userManagementWindow.getModifyButton().addActionListener(this);
 	}
 
+	/**
+     * Carga la lista de usuarios en la ventana de gestión de usuarios.
+     */
 	public void loadUsuarios() {
 		userManagementWindow.getUserListModel().clear();
 		List<UsuarioEntity> usuarios = conexionSQL.obtenerUsuarios();

@@ -17,12 +17,25 @@ import vista.UserMaintenanceWindow;
 import vista.UserManagementWindow;
 import vista.VehicleManagementWindow;
 
+/**
+ * El controlador HomeController gestiona las acciones del usuario en la ventana
+ * principal de la aplicación. Dependiendo de la acción seleccionada por el
+ * usuario, se crean y muestran otras ventanas y controladores asociados para la
+ * gestión de vehículos, usuarios, asignaciones y mantenimientos.
+ */
 public class HomeController implements ActionListener {
 
 	private ConexionSQL conexionSQL;
 	private HomeWindow homeView;
 	private Modelo modelo;
 
+	/**
+	 * Constructor para el controlador HomeController.
+	 * 
+	 * @param homeView    La ventana principal de la aplicación.
+	 * @param conexionSQL El objeto de conexión a la base de datos.
+	 * @param modelo      El modelo de datos utilizado en la aplicación.
+	 */
 	public HomeController(HomeWindow homeView, ConexionSQL conexionSQL, Modelo modelo) {
 		this.homeView = homeView;
 		this.conexionSQL = conexionSQL;
@@ -54,15 +67,17 @@ public class HomeController implements ActionListener {
 			MaintenanceManagementWindow maintenanceWindow = new MaintenanceManagementWindow();
 			MaintenanceController maintenanceController = new MaintenanceController(maintenanceWindow, conexionSQL);
 			maintenanceWindow.getDeleteButton().addActionListener(maintenanceController);
-			maintenanceController.loadMaintenance();;
+			maintenanceController.loadMaintenance();
+			;
 			System.out.println("Mantenimientos seleccionado");
 		} else if (e.getActionCommand() == "Salir") {
 			System.exit(0);
 		} else if (e.getActionCommand() == "Mantenimientos pendientes") {
 			System.out.println("HOla");
 			UserMaintenanceWindow maintenanceUserWindow = new UserMaintenanceWindow();
-			UserMaintenanceControlller userMController = new UserMaintenanceControlller(maintenanceUserWindow, conexionSQL, modelo);
+			UserMaintenanceControlller userMController = new UserMaintenanceControlller(maintenanceUserWindow,
+					conexionSQL, modelo);
 			userMController.loadMaintenance();
 		}
 	}
-	}
+}

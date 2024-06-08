@@ -15,10 +15,20 @@ import vista.AssignmentsManagementWindow;
 import vista.CreateAssignmentsWindow;
 import vista.ModifyVehicleWindow;
 
+/**
+ * Controlador para la gestión de asignaciones de vehículos.
+ */
 public class AssignmentsController implements ActionListener {
 	private AssignmentsManagementWindow assignmentsWindow;
 	private ConexionSQL conexionSQL;
 
+	/**
+	 * Constructor de AssignmentsController.
+	 *
+	 * @param assignmentsWindow la ventana de gestión de asignaciones
+	 * @param conexionSQL       la conexión SQL utilizada para acceder a la base de
+	 *                          datos
+	 */
 	public AssignmentsController(AssignmentsManagementWindow assignmentsWindow, ConexionSQL conexionSQL) {
 		this.assignmentsWindow = assignmentsWindow;
 		this.conexionSQL = conexionSQL;
@@ -27,17 +37,25 @@ public class AssignmentsController implements ActionListener {
 		this.assignmentsWindow.getModifyButton().addActionListener(this);
 	}
 
+	/**
+     * Carga las asignaciones de vehículos en la ventana de gestión de asignaciones.
+     */
 	public void loadAssignments() {
 		List<AsignacionesEntity> asignaciones = conexionSQL.obtenerAsignaciones();
 		for (AsignacionesEntity asignacion : asignaciones) {
-			assignmentsWindow.getAssignmentsListModel()
-					.addElement("ID: " + asignacion.getIdAsignacion() + "   ||   Vehiculo: "
-							+ conexionSQL.obtenerVehiculoPorId(asignacion.getIdVehiculo()).getMatricula()
-							+ "   ||   Conductor: " + conexionSQL.obtenerUsuarioPorId(asignacion.getIdConductor()).getNombre()
-							+ "   ||   Fecha de asignación: " + asignacion.getFechaAsignacion());
+			assignmentsWindow.getAssignmentsListModel().addElement("ID: " + asignacion.getIdAsignacion()
+					+ "   ||   Vehiculo: " + conexionSQL.obtenerVehiculoPorId(asignacion.getIdVehiculo()).getMatricula()
+					+ "   ||   Conductor: " + conexionSQL.obtenerUsuarioPorId(asignacion.getIdConductor()).getNombre()
+					+ "   ||   Fecha de asignación: " + asignacion.getFechaAsignacion());
 		}
 	}
 
+	/**
+     * Valida el formato de una fecha.
+     *
+     * @param fecha la fecha a validar
+     * @return true si el formato de fecha es válido, false de lo contrario
+     */
 	public boolean validarFormatoFecha(String fecha) {
 		String formatoFechaRegex = "\\d{4}-\\d{2}-\\d{2}";
 		Pattern pattern = Pattern.compile(formatoFechaRegex);

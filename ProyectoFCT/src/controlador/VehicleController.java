@@ -14,19 +14,32 @@ import vista.CreateVehicleWindow;
 import vista.ModifyVehicleWindow;
 import vista.VehicleManagementWindow;
 
+/**
+ * La clase VehicleController gestiona las interacciones entre la ventana de
+ * gestión de vehículos y la base de datos.
+ */
 public class VehicleController implements ActionListener {
 	private VehicleManagementWindow vehicleManagementWindow;
 	private ConexionSQL conexionSQL;
 
+	/**
+	 * Constructor de la clase VehicleController.
+	 * 
+	 * @param vehicleManagementWindow La ventana de gestión de vehículos.
+	 * @param conexionSQL             La conexión a la base de datos.
+	 */
 	public VehicleController(VehicleManagementWindow vehicleManagementWindow, ConexionSQL conexionSQL) {
 		this.vehicleManagementWindow = vehicleManagementWindow;
 		this.conexionSQL = conexionSQL;
-		
+
 		this.vehicleManagementWindow.getDeleteButton().addActionListener(this);
-        this.vehicleManagementWindow.getCreateButton().addActionListener(this);
-        this.vehicleManagementWindow.getModifyButton().addActionListener(this);
+		this.vehicleManagementWindow.getCreateButton().addActionListener(this);
+		this.vehicleManagementWindow.getModifyButton().addActionListener(this);
 	}
 
+	/**
+	 * Carga los vehículos en la ventana de gestión de vehículos.
+	 */
 	public void loadVehicles() {
 		vehicleManagementWindow.getVehicleListModel().clear();
 		List<VehiculoEntity> vehiculos = conexionSQL.obtenerVehiculos();
@@ -67,11 +80,11 @@ public class VehicleController implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String marca = createVehicleWindow.getMarcaField().getText();
-			        String modelo = createVehicleWindow.getModeloField().getText();
-			        String matricula = createVehicleWindow.getMatriculaField().getText();
-			        int anoMatriculacion = Integer.parseInt(createVehicleWindow.getAnoMatriculacionField().getText());
+					String modelo = createVehicleWindow.getModeloField().getText();
+					String matricula = createVehicleWindow.getMatriculaField().getText();
+					int anoMatriculacion = Integer.parseInt(createVehicleWindow.getAnoMatriculacionField().getText());
 
-			        VehiculoEntity vehiculo = new VehiculoEntity(0, marca, modelo, matricula, anoMatriculacion);
+					VehiculoEntity vehiculo = new VehiculoEntity(0, marca, modelo, matricula, anoMatriculacion);
 					conexionSQL.crearVehiculo(vehiculo);
 					createVehicleWindow.dispose();
 					loadVehicles();
@@ -90,11 +103,13 @@ public class VehicleController implements ActionListener {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							String marca = modifyVehicleWindow.getMarcaField().getText();
-					        String modelo = modifyVehicleWindow.getModeloField().getText();
-					        String matricula = modifyVehicleWindow.getMatriculaField().getText();
-					        int anoMatriculacion = Integer.parseInt(modifyVehicleWindow.getAnoMatriculacionField().getText());
+							String modelo = modifyVehicleWindow.getModeloField().getText();
+							String matricula = modifyVehicleWindow.getMatriculaField().getText();
+							int anoMatriculacion = Integer
+									.parseInt(modifyVehicleWindow.getAnoMatriculacionField().getText());
 
-					        VehiculoEntity vehiculo = new VehiculoEntity(idVehiculo, marca, modelo, matricula, anoMatriculacion);
+							VehiculoEntity vehiculo = new VehiculoEntity(idVehiculo, marca, modelo, matricula,
+									anoMatriculacion);
 							if (conexionSQL.modificarVehiculo(vehiculo)) {
 								modifyVehicleWindow.dispose();
 								loadVehicles();

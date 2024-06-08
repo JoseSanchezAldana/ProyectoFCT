@@ -15,10 +15,19 @@ import vista.CreateAssignmentsWindow;
 import vista.CreateMaintenanceWindow;
 import vista.MaintenanceManagementWindow;
 
+/**
+ * El controlador MaintenanceController gestiona las acciones relacionadas con la administración de mantenimientos.
+ * Controla la creación, modificación y eliminación de mantenimientos, así como la carga inicial de la lista de mantenimientos.
+ */
 public class MaintenanceController implements ActionListener {
 	private MaintenanceManagementWindow maintenanceWindow;
 	private ConexionSQL conexionSQL;
 
+	/**
+     * Constructor de MaintenanceController.
+     * @param maintenanceWindow La ventana de gestión de mantenimientos.
+     * @param conexionSQL El objeto de conexión a la base de datos.
+     */
 	public MaintenanceController(MaintenanceManagementWindow maintenanceWindow, ConexionSQL conexionSQL) {
 		this.maintenanceWindow = maintenanceWindow;
 		this.conexionSQL = conexionSQL;
@@ -27,6 +36,9 @@ public class MaintenanceController implements ActionListener {
 		this.maintenanceWindow.getModifyButton().addActionListener(this);
 	}
 
+	/**
+     * Carga inicial de los mantenimientos desde la base de datos y los muestra en la ventana de gestión de mantenimientos.
+     */
 	public void loadMaintenance() {
 		List<MantenimientoEntity> mantenimientos = conexionSQL.obtenerMantenimientos();
 		for (MantenimientoEntity mantenimiento : mantenimientos) {
@@ -38,6 +50,11 @@ public class MaintenanceController implements ActionListener {
 		}
 	}
 
+	/**
+     * Valida el formato de la fecha según el formato yyyy-MM-dd.
+     * @param fecha La fecha a validar.
+     * @return true si la fecha tiene el formato correcto, false de lo contrario.
+     */
 	public boolean validarFormatoFecha(String fecha) {
 		String formatoFechaRegex = "\\d{4}-\\d{2}-\\d{2}";
 		Pattern pattern = Pattern.compile(formatoFechaRegex);
